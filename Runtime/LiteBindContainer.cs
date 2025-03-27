@@ -21,10 +21,6 @@ namespace LiteBindDI
             _parent = parent;
         }
 
-        /// <summary>
-        /// Binds a singleton instance to both its interface and concrete type.
-        /// Useful for lifecycle systems (Initialize, Tick, Dispose) and access by interface.
-        /// </summary>
         public void BindSingletonInterfaceAndSelf<TInterface, TImpl>(TImpl instance) where TImpl : TInterface
         {
             if (instance == null)
@@ -50,9 +46,6 @@ namespace LiteBindDI
             _bindings[typeImpl] = binding;
         }
 
-        /// <summary>
-        /// Binds a specific singleton instance of type T.
-        /// </summary>
         public void BindSingleton<T>(T instance)
         {
             if (instance == null)
@@ -69,9 +62,6 @@ namespace LiteBindDI
             };
         }
 
-        /// <summary>
-        /// Binds a singleton using a factory delegate. Instantiated on first resolve.
-        /// </summary>
         public void BindSingleton<T>(Func<T> factory)
         {
             if (factory == null)
@@ -88,9 +78,6 @@ namespace LiteBindDI
             };
         }
 
-        /// <summary>
-        /// Binds a transient dependency. A new instance is created on each resolve.
-        /// </summary>
         public void BindTransient<T>(Func<T> factory)
         {
             if (factory == null)
@@ -106,18 +93,13 @@ namespace LiteBindDI
             };
         }
 
-        /// <summary>
-        /// Resolves an instance of type T.
-        /// </summary>
         public T Resolve<T>()
         {
             var type = typeof(T);
 
             if (!TryGetBindingOrParent(type, out var binding))
             {
-                throw new LiteBindException(
-                    $"[LiteBind] Type `{type.FullName}` was not bound.\nAvailable bindings:\n - {GetAvailableBindings()}"
-                );
+                throw new LiteBindException($"[LiteBind] Type `{type.FullName}` was not bound.\nAvailable bindings:\n - {GetAvailableBindings()}");
             }
 
             if (binding.IsSingleton)
@@ -131,17 +113,11 @@ namespace LiteBindDI
             return (T)binding.Factory();
         }
 
-        /// <summary>
-        /// Resolves an instance by runtime Type (non-generic).
-        /// Used internally by lifecycle runner.
-        /// </summary>
         public object Resolve(Type type)
         {
             if (!TryGetBindingOrParent(type, out var binding))
             {
-                throw new LiteBindException(
-                    $"[LiteBind] Type `{type.FullName}` was not bound.\nAvailable bindings:\n - {GetAvailableBindings()}"
-                );
+                throw new LiteBindException($"[LiteBind] Type `{type.FullName}` was not bound.\nAvailable bindings:\n - {GetAvailableBindings()}");
             }
 
             if (binding.IsSingleton)
@@ -155,9 +131,6 @@ namespace LiteBindDI
             return binding.Factory();
         }
 
-        /// <summary>
-        /// Binds a parameterized factory via IFactory interface.
-        /// </summary>
         public void BindFactory<TParam, TResult>(Func<TParam, TResult> factory)
         {
             var key = typeof(IFactory<TParam, TResult>);
@@ -173,18 +146,21 @@ namespace LiteBindDI
             };
         }
 
-        /// <summary>
-        /// Returns all registered types (for lifecycle scanning).
-        /// </summary>
-        public IEnumerable<Type> GetAllBoundTypes()
+        public IEnumerable<object> GetAllBoundInstances()
         {
-            foreach (var kvp in _bindings)
-                yield return kvp.Key;
+            HashSet<object> unique = new();
+
+            foreach (var binding in _bindings.Values)
+            {
+                object instance = binding.IsSingleton
+                    ? (binding.SingletonInstance ??= binding.Factory())
+                    : binding.Factory();
+
+                if (unique.Add(instance))
+                    yield return instance;
+            }
         }
 
-        /// <summary>
-        /// Attempts to find binding in current or parent container.
-        /// </summary>
         private bool TryGetBindingOrParent(Type type, out Binding binding)
         {
             if (_bindings.TryGetValue(type, out binding))
@@ -193,9 +169,6 @@ namespace LiteBindDI
             return _parent != null && _parent.TryGetBindingOrParent(type, out binding);
         }
 
-        /// <summary>
-        /// Returns a list of all registered types (for error messages).
-        /// </summary>
         private string GetAvailableBindings()
         {
             return _bindings.Count > 0
@@ -203,13 +176,11 @@ namespace LiteBindDI
                 : "No bindings available.";
         }
 
-
         public void InjectInto(object target)
         {
             var type = target.GetType();
             var flags = BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public;
 
-            // Поля
             foreach (var field in type.GetFields(flags))
             {
                 if (field.GetCustomAttribute<LiteInjectAttribute>() != null)
@@ -219,7 +190,6 @@ namespace LiteBindDI
                 }
             }
 
-            // Свойства
             foreach (var prop in type.GetProperties(flags))
             {
                 if (prop.GetCustomAttribute<LiteInjectAttribute>() != null && prop.CanWrite)
@@ -229,7 +199,6 @@ namespace LiteBindDI
                 }
             }
 
-            // Методы без параметров
             foreach (var method in type.GetMethods(flags))
             {
                 if (method.GetCustomAttribute<LiteInjectAttribute>() != null && method.GetParameters().Length == 0)

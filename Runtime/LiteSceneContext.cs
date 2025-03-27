@@ -40,15 +40,15 @@ namespace LiteBindDI
         protected abstract void InstallBindings(LiteBindContainer container);
         protected virtual void OnContainerReady(LiteBindContainer container) { }
 
+       
         private void InjectAllSceneMonoBehaviours()
         {
-            foreach (var type in Container.GetAllBoundTypes())
+            foreach (var instance in Container.GetAllBoundInstances())
             {
-                var instance = Container.Resolve(type);
                 Container.InjectInto(instance); // и вот тут поле с атрибутом точно будет
             }
-
         }
+
 
 
     }

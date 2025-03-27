@@ -11,11 +11,8 @@ namespace LiteBindDI
 
         public void CollectFromContainer(LiteBindContainer container)
         {
-            foreach (var type in container.GetAllBoundTypes())
+            foreach (var resolved in container.GetAllBoundInstances())
             {
-                var resolved = container.Resolve(type); 
-
-
                 if (resolved is IInitializable init)
                     _initializables.Add(init);
                 if (resolved is IUpdatable tick)
@@ -23,6 +20,7 @@ namespace LiteBindDI
                 if (resolved is IDisposableService disp)
                     _disposables.Add(disp);
             }
+
         }
 
         public void InitializeAll()
