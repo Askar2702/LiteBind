@@ -1,0 +1,11 @@
+{
+  "name": "com.Askar.litebind",
+  "version": "1.0.0",
+  "displayName": "LiteBind DI",
+  "description": "A lightweight dependency injection system for Unity, inspired by Zenject.",
+  "unity": "6000.0.42",
+  "author": {
+    "name": "Askar",
+    "url": "https://github.com/Askar2702"
+  }
+}
