@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using UnityEngine;
@@ -41,15 +42,12 @@ namespace LiteBindDI
 
         private void InjectAllSceneMonoBehaviours()
         {
-            var sceneObjects = FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.InstanceID)
-                 .Where(m => m.GetType().GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)
-                 .Any(f => f.GetCustomAttribute<LiteInjectAttribute>() != null));
-
-          
-            foreach (var obj in sceneObjects)
+            foreach (var type in Container.GetAllBoundTypes())
             {
-                Container.InjectInto(obj);
+                var instance = Container.Resolve(type);
+                Container.InjectInto(instance); // и вот тут поле с атрибутом точно будет
             }
+
         }
 
 
