@@ -17,13 +17,13 @@ namespace LiteBindDI
             Container = new LiteBindContainer(LiteProjectContext.Container);
             InstallBindings(Container);
 
+
+            OnContainerReady(Container);
+            InjectAllSceneMonoBehaviours();
+
             _lifecycle = new LiteLifecycleRunner();
             _lifecycle.CollectFromContainer(Container);
             _lifecycle.InitializeAll();
-
-            OnContainerReady(Container);
-
-            InjectAllSceneMonoBehaviours();
 
         }
 
