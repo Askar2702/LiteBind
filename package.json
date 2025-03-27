@@ -1,5 +1,5 @@
 {
-  "name": "com.Askar.litebind",
+  "name": "com.askar.litebind",
   "version": "1.0.0",
   "displayName": "LiteBind DI",
   "description": "A lightweight dependency injection system for Unity, inspired by Zenject.",
