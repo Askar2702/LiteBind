@@ -25,7 +25,7 @@ LiteBind — это лёгкий, минималистичный и расшир
 
 🧠 Быстрый старт
 1. Создайте LiteProjectContext в сцене
-
+```csharp
 public class ProjectRoot : LiteProjectContext
 {
     protected override void InstallBindings(LiteBindContainer container)
@@ -33,9 +33,9 @@ public class ProjectRoot : LiteProjectContext
         container.BindSingleton<IAnalyticsService>(new AnalyticsService());
     }
 }
-
+```
 2. Создайте LiteSceneContext в сцене
-
+```csharp
 public class GameSceneContext : LiteSceneContext
 {
     protected override void InstallBindings(LiteBindContainer container)
@@ -43,9 +43,9 @@ public class GameSceneContext : LiteSceneContext
         container.BindSingletonInterfaceAndSelf<IPlayerService, PlayerService>(new PlayerService());
     }
 }
-
+```
 3. Используйте [LiteInject]
-
+```csharp
 public class PlayerHUD : MonoBehaviour
 {
     [LiteInject] private IPlayerService _playerService;
@@ -55,20 +55,23 @@ public class PlayerHUD : MonoBehaviour
         _playerService.DoSomething();
     }
 }
+```
 🧬 Жизненный цикл
 Если ваш сервис реализует:
-
+```csharp
 public interface IInitializable { void Initialize(); }
 public interface IUpdatable { void Tick(); }
 public interface IDisposableService { void Dispose(); }
 Он будет вызываться автоматически системой LiteLifecycleRunner.
-
+```
 🏭 Фабрики
 
+```csharp
 container.BindFactory<string, Enemy>(name => new Enemy(name));
 
 var factory = container.Resolve<IFactory<string, Enemy>>();
 var enemy = factory.Create("Zombie");
+```
 📛 Атрибуты
 [LiteInject] — внедряет зависимости в поля MonoBehaviour (автоматически)
 
