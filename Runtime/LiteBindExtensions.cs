@@ -4,7 +4,7 @@ namespace LiteBindDI
 {
     public static class LiteBindExtensions
     {
-        public static T InstantiateInjected<T>(this T prefab, Vector3 position, Quaternion rotation) where T : Object
+        public static T InstantiateInjected<T>(this T prefab, Vector3 position, Quaternion rotation) where T : MonoBehaviour
         {
             var container = LiteProjectContext.Container;
 
@@ -12,22 +12,12 @@ namespace LiteBindDI
                 throw new LiteBindException("[LiteBind] Cannot instantiate — global container is null.");
 
             var instance = Object.Instantiate(prefab, position, rotation);
-
-            if (instance is GameObject go)
-            {
-                foreach (var mono in go.GetComponentsInChildren<MonoBehaviour>(true))
-                {
-                    container.InjectInto(mono);
-                    container.BindSingleton(mono); // <=== ÄÎÁÀÂÈË
-                }
-            }
-            else if (instance is MonoBehaviour mono)
-            {
-                container.InjectInto(mono);
-                container.BindSingleton(mono); // <=== ÄÎÁÀÂÈË
-            }
+            container.InjectInto(instance);
+            container.BindSingleton(instance);
 
             return instance;
         }
+
+
     }
 }
