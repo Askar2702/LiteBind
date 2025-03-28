@@ -16,11 +16,15 @@ namespace LiteBindDI
             if (instance is GameObject go)
             {
                 foreach (var mono in go.GetComponentsInChildren<MonoBehaviour>(true))
+                {
                     container.InjectInto(mono);
+                    container.BindSingleton(mono); // <=== ÄÎÁÀÂÈË
+                }
             }
             else if (instance is MonoBehaviour mono)
             {
                 container.InjectInto(mono);
+                container.BindSingleton(mono); // <=== ÄÎÁÀÂÈË
             }
 
             return instance;
