@@ -207,11 +207,20 @@ namespace LiteBindDI
                 }
             }
         }
-
-        public void Clear()
+      
+       
+        public void UnbindAll()
         {
             _bindings.Clear();
         }
+        public void Unbind(Type type)
+        {
+            _bindings.Remove(type);
+        }
+
+
+      
+
     }
 
     public class FactoryWrapper<TParam, TResult> : IFactory<TParam, TResult>

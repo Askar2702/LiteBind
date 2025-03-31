@@ -6,7 +6,7 @@ namespace LiteBindDI
     {
         public static T InstantiateInjected<T>(this T prefab, Vector3 position, Quaternion rotation) where T : MonoBehaviour
         {
-            var container = LiteProjectContext.Container;
+            var container = LiteSceneContext.Container;
 
             if (container == null)
                 throw new LiteBindException("[LiteBind] Cannot instantiate — global container is null.");
