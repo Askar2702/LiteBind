@@ -208,6 +208,10 @@ namespace LiteBindDI
             }
         }
 
+        public void Clear()
+        {
+            _bindings.Clear();
+        }
     }
 
     public class FactoryWrapper<TParam, TResult> : IFactory<TParam, TResult>
