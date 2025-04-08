@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using System.IO;
 using System.Linq;
 using UnityEditor;
@@ -69,3 +70,4 @@ public static class LiteBindIconSetter
         }
     }
 }
+#endif
