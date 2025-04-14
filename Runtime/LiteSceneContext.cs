@@ -1,3 +1,4 @@
+using LiteBindDI.Services.Localization;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -15,6 +16,8 @@ namespace LiteBindDI
         protected virtual void Awake()
         {
             Container = new LiteBindContainer(LiteProjectContext.Container);
+
+            InstallBindings();
             InstallBindings(Container);
 
 
@@ -40,7 +43,10 @@ namespace LiteBindDI
         protected abstract void InstallBindings(LiteBindContainer container);
         protected virtual void OnContainerReady(LiteBindContainer container) { }
 
-       
+        private void InstallBindings()
+        {
+            Container.BindSingletonInterfaceAndSelf<ILocalizationService, LocalizationService>(new LocalizationService());
+        }
         private void InjectAllSceneMonoBehaviours()
         {
             foreach (var instance in Container.GetAllBoundInstances())

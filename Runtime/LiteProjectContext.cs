@@ -1,3 +1,4 @@
+using LiteBindDI.Services.Localization;
 using UnityEngine;
 
 namespace LiteBindDI
@@ -19,7 +20,7 @@ namespace LiteBindDI
             Container = new LiteBindContainer();
             InstallBindings(Container);
         }
-
+      
         protected abstract void InstallBindings(LiteBindContainer container);
     }
 }

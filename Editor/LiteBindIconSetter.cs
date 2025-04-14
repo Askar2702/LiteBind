@@ -14,10 +14,12 @@ public static class LiteBindIconSetter
     static LiteBindIconSetter()
     {
         string iconPath = GetIconPath();
-        if (string.IsNullOrEmpty(iconPath)) return;
+        if (string.IsNullOrEmpty(iconPath))
+            return;
 
         _icon = AssetDatabase.LoadAssetAtPath<Texture2D>(iconPath);
-        if (_icon == null) return;
+        if (_icon == null)
+            return;
 
         EditorApplication.delayCall += AssignIcons;
     }
@@ -26,10 +28,12 @@ public static class LiteBindIconSetter
     {
         // Находим сам скрипт этого класса
         string[] guids = AssetDatabase.FindAssets("LiteBindIconSetter t:Script");
-        if (guids.Length == 0) return null;
+        if (guids.Length == 0)
+            return null;
 
         string scriptPath = AssetDatabase.GUIDToAssetPath(guids[0]);
-        if (string.IsNullOrEmpty(scriptPath)) return null;
+        if (string.IsNullOrEmpty(scriptPath))
+            return null;
 
         string basePath = Path.GetDirectoryName(scriptPath); // путь до папки Editor
         string iconPath = Path.Combine(basePath, "LiteBindDI_Icon.png");
@@ -38,6 +42,7 @@ public static class LiteBindIconSetter
 
     private static void AssignIcons()
     {
+        // Ищем все MonoScript в папках Assets и Packages
         string[] guids = AssetDatabase.FindAssets("t:MonoScript", new[] { "Assets", "Packages" });
 
         foreach (string guid in guids)
@@ -52,13 +57,22 @@ public static class LiteBindIconSetter
 
             if (scriptClass != null)
             {
-                matchesNamespace = scriptClass.Namespace == targetNamespace;
+                // Проверяем пространство имен:
+                // - или оно равно targetNamespace
+                // - или начинается с "targetNamespace." (например, LiteBindDI.Services)
+                matchesNamespace = scriptClass.Namespace != null &&
+                                   (scriptClass.Namespace == targetNamespace ||
+                                    scriptClass.Namespace.StartsWith(targetNamespace + "."));
             }
             else
             {
+                // Если класс не найден, парсим текст файла и ищем вхождения
                 string fileText = File.ReadAllText(scriptPath);
-                if (fileText.Contains("namespace " + targetNamespace))
+                bool foundNamespace = fileText.Contains("namespace " + targetNamespace + ".") ||
+                                      fileText.Contains("namespace " + targetNamespace + " ");
+                if (foundNamespace)
                 {
+                    // Дополнительно проверяем наличие ключевых слов, относящихся к типам (interface, struct, enum)
                     matchesNamespace = typeKeywords.Any(fileText.Contains);
                 }
             }
