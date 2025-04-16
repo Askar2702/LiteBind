@@ -1,11 +1,11 @@
 #if UNITY_EDITOR
 using LiteBindDI.Services.Localization;
+using Newtonsoft.Json;
 using System;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Networking;
-using Unity.Plastic.Newtonsoft.Json;
 
 namespace LiteBindDI.Editor
 {
