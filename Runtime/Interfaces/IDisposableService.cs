@@ -1,6 +1,6 @@
 namespace LiteBindDI
 {
-    public interface IDisposableService
+    public interface IDisposableService : IMonoBase
     {
         void Dispose();
     }

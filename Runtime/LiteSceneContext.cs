@@ -34,7 +34,15 @@ namespace LiteBindDI
         {
             _lifecycle?.TickAll();
         }
+        private void FixedUpdate()
+        {
+            _lifecycle?.FixedTickAll();
+        }
 
+        private void LateUpdate()
+        {
+            _lifecycle?.LateTickAll();
+        }
         private void OnDestroy()
         {
             _lifecycle?.DisposeAll();
@@ -54,8 +62,6 @@ namespace LiteBindDI
                 Container.InjectInto(instance); // и вот тут поле с атрибутом точно будет
             }
         }
-
-
-
+       
     }
 }

@@ -1,6 +1,6 @@
 namespace LiteBindDI
 {
-    public interface IInitializable
+    public interface IInitializable : IMonoBase
     {
         void Initialize();
     }
