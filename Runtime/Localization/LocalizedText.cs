@@ -1,4 +1,4 @@
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,7 +14,7 @@ namespace LiteBindDI.Services.Localization
 
         private void Awake()
         {
-            _localization = LiteSceneContext.Container.Resolve<ILocalizationService>();
+            _localization = LiteProjectContext.Container.Resolve<ILocalizationService>();
             _text = GetComponent<TMP_Text>();
         }
 

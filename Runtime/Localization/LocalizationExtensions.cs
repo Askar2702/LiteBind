@@ -24,6 +24,6 @@ namespace LiteBindDI.Services.Localization
             GetLocalizationService().GetTranslation(key, args);
 
         private static ILocalizationService GetLocalizationService() =>
-            LiteSceneContext.Container.Resolve<ILocalizationService>();
+            LiteProjectContext.Container.Resolve<ILocalizationService>();
     }
 }
