@@ -1,4 +1,4 @@
-using LiteBindDI.Services.Localization;
+﻿using LiteBindDI.Services.Localization;
 using UnityEngine;
 
 namespace LiteBindDI
@@ -15,12 +15,17 @@ namespace LiteBindDI
                 Destroy(gameObject);
                 return;
             }
-
             DontDestroyOnLoad(gameObject);
             Container = new LiteBindContainer();
+            InstallBindings();
             InstallBindings(Container);
         }
       
         protected abstract void InstallBindings(LiteBindContainer container);
+
+        private void InstallBindings()
+        {
+            Container.BindSingletonInterfaceAndSelf<ILocalizationService, LocalizationService>(new LocalizationService());
+        }
     }
 }

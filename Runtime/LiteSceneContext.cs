@@ -1,4 +1,4 @@
-using LiteBindDI.Services.Localization;
+п»їusing LiteBindDI.Services.Localization;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -17,7 +17,6 @@ namespace LiteBindDI
         {
             Container = new LiteBindContainer(LiteProjectContext.Container);
 
-            InstallBindings();
             InstallBindings(Container);
 
 
@@ -51,15 +50,12 @@ namespace LiteBindDI
         protected abstract void InstallBindings(LiteBindContainer container);
         protected virtual void OnContainerReady(LiteBindContainer container) { }
 
-        private void InstallBindings()
-        {
-            Container.BindSingletonInterfaceAndSelf<ILocalizationService, LocalizationService>(new LocalizationService());
-        }
+      
         private void InjectAllSceneMonoBehaviours()
         {
             foreach (var instance in Container.GetAllBoundInstances())
             {
-                Container.InjectInto(instance); // и вот тут поле с атрибутом точно будет
+                Container.InjectInto(instance); // Рё РІРѕС‚ С‚СѓС‚ РїРѕР»Рµ СЃ Р°С‚СЂРёР±СѓС‚РѕРј С‚РѕС‡РЅРѕ Р±СѓРґРµС‚
             }
         }
        

@@ -1,11 +1,11 @@
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace LiteBindDI.Services.Localization
 {
-    public class LocalizationService :ILocalizationService , IInitializable
+    public class LocalizationService :ILocalizationService 
     {
         private readonly Dictionary<string, string> _dictionary = new();
         private readonly string _prefsKey = "Localization.Language";
@@ -16,14 +16,11 @@ namespace LiteBindDI.Services.Localization
         public LocalizationService()
         {
             _settings = Resources.Load<LocalizationSettings>("Translations/LocalizationSettings");
-        }
-        public void Initialize()
-        {
             var lang = GetLanguage();
             var asset = GetTextAsset(lang);
             LoadTextAsset(asset);
         }
-        
+      
 
         public SystemLanguage GetLanguage()
         {
