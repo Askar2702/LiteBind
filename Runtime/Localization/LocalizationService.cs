@@ -74,12 +74,14 @@ namespace LiteBindDI.Services.Localization
         public FontLocalizationData GetFontLocalizationData()
         {
             var language = GetLanguage();
-            for (int i = 0; i < _settings.FontLocalizationDatas.Length; i++)
+            if (_settings != null)
             {
-                if (_settings.FontLocalizationDatas[i].Language == language)
-                    return _settings.FontLocalizationDatas[i];
+                for (int i = 0; i < _settings.FontLocalizationDatas.Length; i++)
+                {
+                    if (_settings.FontLocalizationDatas[i].Language == language)
+                        return _settings.FontLocalizationDatas[i];
+                }
             }
-
             return null; 
         }
 
