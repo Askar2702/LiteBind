@@ -18,10 +18,6 @@ namespace LiteBindDI.Services.Localization
         [Header("Translations")]
         public TranslationsData[] TranslationsData;
 
-        [SerializeField] private FontLocalizationData[] _fontLocalizationDatas;
-
-        public FontLocalizationData[] FontLocalizationDatas => _fontLocalizationDatas;
-        
 #if UNITY_EDITOR
         [Header("Remote")]
         public string SheetId = "1roFfP6VEhsV6AAtk9CK1m-cHeNa_DEMtu7sxtb-uX7Q";

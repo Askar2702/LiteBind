@@ -1,4 +1,5 @@
 ﻿using System;
+using TMPro;
 using UnityEngine;
 
 namespace LiteBindDI.Services.Localization
@@ -10,6 +11,6 @@ namespace LiteBindDI.Services.Localization
         void SetLanguage(SystemLanguage language);
         string GetTranslation(string key);
         string GetTranslation(string key, params object[] args);
-        FontLocalizationData GetFontLocalizationData();
+        TMP_FontAsset GetFontLocalizationData();
     }
 }

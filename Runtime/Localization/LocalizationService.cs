@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 namespace LiteBindDI.Services.Localization
@@ -71,15 +72,15 @@ namespace LiteBindDI.Services.Localization
         }
 
 
-        public FontLocalizationData GetFontLocalizationData()
+        public TMP_FontAsset GetFontLocalizationData()
         {
             var language = GetLanguage();
             if (_settings != null)
             {
-                for (int i = 0; i < _settings.FontLocalizationDatas.Length; i++)
+                for (int i = 0; i < _settings.TranslationsData.Length; i++)
                 {
-                    if (_settings.FontLocalizationDatas[i].Language == language)
-                        return _settings.FontLocalizationDatas[i];
+                    if (_settings.TranslationsData[i].SystemLanguage == language)
+                        return _settings.TranslationsData[i].Font;
                 }
             }
             return null; 

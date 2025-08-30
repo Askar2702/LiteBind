@@ -36,10 +36,10 @@ namespace LiteBindDI.Services.Localization
         private void HandleLocalizationUpdate()
         {
             _text.text = _key.ToLocalization();
-            var data = _localization.GetFontLocalizationData();
-            if(data != null)
+            var font = _localization.GetFontLocalizationData();
+            if(font != null)
             {
-                _text.font = data.Font;
+                _text.font = font;
             }
         }
     }

@@ -1,4 +1,5 @@
-using System;
+﻿using System;
+using TMPro;
 using UnityEngine;
 
 namespace LiteBindDI.Services.Localization
@@ -8,5 +9,6 @@ namespace LiteBindDI.Services.Localization
     {
         public SystemLanguage SystemLanguage;
         public TextAsset TextAsset;
+        public TMP_FontAsset Font;
     }
 }
