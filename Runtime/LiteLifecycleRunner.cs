@@ -16,11 +16,15 @@ namespace LiteBindDI
         {
             foreach (var resolved in container.GetAllBoundInstances())
             {
-                if (resolved is IInitializable init && !_initializables.Contains(init))
+                if (resolved is IInitializable init)
                 {
-                    _initializables.Add(init);
-                    init.Initialize();
-                    Debug.Log($"List Init {resolved}");
+                    Debug.Log($"{resolved}  {!_initializables.Contains(init)}");
+                    if (!_initializables.Contains(init))
+                    {
+                        _initializables.Add(init);
+                        init.Initialize();
+                        Debug.Log($"List Init {resolved}");
+                    }
                 }
 
 
