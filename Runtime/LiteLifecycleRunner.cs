@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,34 +16,27 @@ namespace LiteBindDI
         {
             foreach (var resolved in container.GetAllBoundInstances())
             {
-                if (resolved is IInitializable init)
+                if (resolved is IInitializable init && !_initializables.Contains(init))
+                {
                     _initializables.Add(init);
+                    init.Initialize();
+                }
 
-                if (resolved is IUpdatable tick)
+                if (resolved is IUpdatable tick && !_updatables.Contains(tick)) 
                     _updatables.Add(tick);
 
-                if (resolved is IFixedUpdatable fixedTick)
+                if (resolved is IFixedUpdatable fixedTick && !_fixedUpdatables.Contains(fixedTick)) 
                     _fixedUpdatables.Add(fixedTick);
 
-                if (resolved is ILateUpdatable lateTick)
+                if (resolved is ILateUpdatable lateTick && !_lateUpdatables.Contains(lateTick)) 
                     _lateUpdatables.Add(lateTick);
 
-                if (resolved is IDisposableService disp)
+                if (resolved is IDisposableService disp && !_disposables.Contains(disp)) 
                     _disposables.Add(disp);
             }
         }
 
-        public void InitializeAll()
-        {
-            foreach (var i in _initializables)
-            {
-                try { i.Initialize(); }
-                catch (Exception e)
-                {
-                    Debug.LogError($"Initialize exception in {i.GetType().Name}: {e}");
-                }
-            }
-        }
+      
 
         public void TickAll()
         {

@@ -11,7 +11,7 @@ namespace LiteBindDI
     public abstract class LiteSceneContext : MonoBehaviour
     {
         public static LiteBindContainer Container { get;private set; }
-        private LiteLifecycleRunner _lifecycle;
+      
 
         protected virtual void Awake()
         {
@@ -22,31 +22,11 @@ namespace LiteBindDI
 
             OnContainerReady(Container);
             InjectAllSceneMonoBehaviours();
-
-            _lifecycle = new LiteLifecycleRunner();
-            _lifecycle.CollectFromContainer(Container);
-            _lifecycle.InitializeAll();
+            LiteProjectContext.CollectFromContainer();
 
         }
 
-        private void Update()
-        {
-            _lifecycle?.TickAll();
-        }
-        private void FixedUpdate()
-        {
-            _lifecycle?.FixedTickAll();
-        }
-
-        private void LateUpdate()
-        {
-            _lifecycle?.LateTickAll();
-        }
-        private void OnDestroy()
-        {
-            _lifecycle?.DisposeAll();
-        }
-
+       
         protected abstract void InstallBindings(LiteBindContainer container);
         protected virtual void OnContainerReady(LiteBindContainer container) { }
 
