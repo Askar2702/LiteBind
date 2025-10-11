@@ -22,7 +22,7 @@ namespace LiteBindDI
 
             OnContainerReady(Container);
             InjectAllSceneMonoBehaviours();
-            LiteProjectContext.CollectFromContainer();
+            LiteProjectContext.CollectFromContainer(Container);
 
         }
 

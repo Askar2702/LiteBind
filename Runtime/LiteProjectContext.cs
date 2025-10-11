@@ -19,7 +19,7 @@ namespace LiteBindDI
             Container = new LiteBindContainer();
             InstallBindings();
             InstallBindings(Container);
-            CollectFromContainer();
+            CollectFromContainer(Container);
         }
       
         protected abstract void InstallBindings(LiteBindContainer container);
@@ -29,10 +29,10 @@ namespace LiteBindDI
             Container.BindSingletonInterfaceAndSelf<ILocalizationService, LocalizationService>(new LocalizationService());
         }
 
-        public static void CollectFromContainer()
+        public static void CollectFromContainer(LiteBindContainer container)
         {
             _lifecycle ??= new LiteLifecycleRunner();
-            _lifecycle.CollectFromContainer(Container);
+            _lifecycle.CollectFromContainer(container);
         }
 
         private void Update()
