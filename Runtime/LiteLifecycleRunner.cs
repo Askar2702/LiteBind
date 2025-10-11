@@ -16,17 +16,13 @@ namespace LiteBindDI
         {
             foreach (var resolved in container.GetAllBoundInstances())
             {
-                List<IInitializable> initializables = new();
                 if (resolved is IInitializable init && !_initializables.Contains(init))
                 {
                     _initializables.Add(init);
-                    initializables.Add(init);
+                    init.Initialize();
+                    Debug.Log($"List Init {resolved}");
                 }
 
-                for (int i = 0; i < initializables.Count; i++)
-                {
-                    initializables[i].Initialize();
-                }
 
                 if (resolved is IUpdatable tick && !_updatables.Contains(tick)) 
                     _updatables.Add(tick);
