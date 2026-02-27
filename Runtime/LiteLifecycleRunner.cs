@@ -7,6 +7,7 @@ namespace LiteBindDI
     public class LiteLifecycleRunner
     {
         private readonly List<IInitializable> _initializables = new();
+        private readonly List<IStart> _starts = new();
         private readonly List<IUpdatable> _updatables = new();
         private readonly List<IFixedUpdatable> _fixedUpdatables = new();
         private readonly List<ILateUpdatable> _lateUpdatables = new();
@@ -25,6 +26,8 @@ namespace LiteBindDI
                     }
                 }
 
+                if (resolved is IStart start && !_starts.Contains(start))
+                    _starts.Add(start);
 
                 if (resolved is IUpdatable tick && !_updatables.Contains(tick)) 
                     _updatables.Add(tick);
@@ -41,7 +44,23 @@ namespace LiteBindDI
         }
 
       
+        public void StartAll()
+        {
+            foreach (var s in _starts)
+            {
+                try
+                {
+                    if (s is IConditional cond && !cond.IsActive)
+                        continue;
 
+                    s.Start();
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError($"Tick exception in {s.GetType().Name}: {e}");
+                }
+            }
+        }
         public void TickAll()
         {
             foreach (var u in _updatables)

@@ -35,6 +35,11 @@ namespace LiteBindDI
             _lifecycle.CollectFromContainer(container);
         }
 
+        private void Start()
+        {
+            _lifecycle?.StartAll();
+        }
+
         private void Update()
         {
             _lifecycle?.TickAll();
